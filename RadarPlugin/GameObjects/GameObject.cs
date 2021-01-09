@@ -10,11 +10,11 @@ namespace RadarPlugin.GameObjects {
         public uint ObjectId { get; }
         public uint IdLocation { get; private set; }
 
-        public GameObjectType Type => (GameObjectType)Memory.Read<byte>(Pointer + Offsets.Object.Type);
-        public Vector3 Location => Memory.Read<Vector3>(Pointer + Offsets.Object.Location);
-        public float Heading => Memory.Read<float>(Pointer + Offsets.Object.Heading);
+        public GameObjectType Type => (GameObjectType)Core.Memory.Read<byte>(Pointer + Offsets.Object.Type);
+        public Vector3 Location => Core.Memory.Read<Vector3>(Pointer + Offsets.Object.Location);
+        public float Heading => Core.Memory.Read<float>(Pointer + Offsets.Object.Heading);
 
-        public virtual uint NpcId => Memory.Read<uint>(Pointer + Offsets.Object.NpcId);
+        public virtual uint NpcId => Core.Memory.Read<uint>(Pointer + Offsets.Object.NpcId);
 
         public GameObject(IntPtr pointer) : base(pointer) {
             ObjectId = GetObjectId();
@@ -22,13 +22,13 @@ namespace RadarPlugin.GameObjects {
 
         private uint GetObjectId() {
             uint objId;
-            var id1 = Memory.Read<uint>(Pointer + Offsets.Object.ObjectId);
+            var id1 = Core.Memory.Read<uint>(Pointer + Offsets.Object.ObjectId);
             if (id1 != GameObjectManager.EmptyObjectId) {
                 objId = id1;
                 IdLocation = 0;
             } else {
-                var id2 = Memory.Read<uint>(Pointer + Offsets.Object.ObjectId2);
-                var id3 = Memory.Read<ushort>(Pointer + Offsets.Object.ObjectId3);
+                var id2 = Core.Memory.Read<uint>(Pointer + Offsets.Object.ObjectId2);
+                var id3 = Core.Memory.Read<ushort>(Pointer + Offsets.Object.ObjectId3);
                 if (id2 != 0 && id3 - 200 > 43) {
                     objId = id2;
                     IdLocation = 1;
@@ -37,28 +37,30 @@ namespace RadarPlugin.GameObjects {
                     IdLocation = 2;
                 }
             }
+
             return objId;
         }
 
         private string GetName() {
             if (!string.IsNullOrEmpty(_name)) return _name;
-            
+
             var type = Type;
             var npcId = NpcId;
             string localizedName = null;
-            if (type == GameObjectType.BattleNpc && npcId > 0) {
+            if (type == GameObjectType.BattleNpc && npcId > 0)
                 localizedName = GameDataManager.GetBattleNpcName(npcId);
-            } else if (type == GameObjectType.EventNpc) {
+            else if (type == GameObjectType.EventNpc)
                 localizedName = GameDataManager.GetEventNpcName(npcId);
-            } else if (type == GameObjectType.GatheringPoint) {
-                return _name = Memory.ReadString(Pointer + Offsets.Object.Name);
-            }
+            else if (type == GameObjectType.GatheringPoint)
+                return _name = Core.Memory.ReadString(Pointer + Offsets.Object.Name);
             if (!string.IsNullOrEmpty(localizedName))
                 return _name = localizedName;
-            return _name = Memory.ReadString(Pointer + Offsets.Object.Name);
+            return _name = Core.Memory.ReadString(Pointer + Offsets.Object.Name);
         }
-        
-        public override string ToString() => $"{Name} {Pointer.ToInt64():X8}";
+
+        public override string ToString() {
+            return $"{Name} {Pointer.ToInt64():X8}";
+        }
 
         #region IEquatable
 

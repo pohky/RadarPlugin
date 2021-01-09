@@ -62,13 +62,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core.cs" />
     <Compile Include="Managers\GameDataManager.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="Managers\GameObjectManager.cs" />
     <Compile Include="GameObjects\GameObjectType.cs" />
-    <Compile Include="MarshalType.cs" />
-    <Compile Include="Memory.cs" />
+    <Compile Include="Memory\MarshalType.cs" />
     <Compile Include="GameObjects\Offsets.cs" />
+    <Compile Include="Memory\ProcessMemory.cs" />
     <Compile Include="PluginGui\DrawObject.cs" />
     <Compile Include="PluginGui\PluginUi.cs" />
     <Compile Include="GameObjects\RemoteObject.cs" />

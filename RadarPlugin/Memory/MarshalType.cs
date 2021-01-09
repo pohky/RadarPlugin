@@ -6,8 +6,8 @@ using System.Text;
 // ReSharper disable StaticMemberInGenericType
 // ReSharper disable SwitchStatementMissingSomeCases
 
-namespace RadarPlugin {
-    public static class MarshalType<T> {
+namespace RadarPlugin.Memory {
+    internal static class MarshalType<T> {
         public static bool IsIntPtr { get; }
         public static Type RealType { get; }
         public static int Size { get; }

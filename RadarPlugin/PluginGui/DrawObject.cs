@@ -11,6 +11,7 @@ namespace RadarPlugin.PluginGui {
         public GameObjectType Type { get; }
 
         public uint Color { get; }
+        public int Radius { get; set; } = 4;
 
         public DrawObject(GameObject obj) {
             Address = obj.Pointer;
@@ -53,9 +54,14 @@ namespace RadarPlugin.PluginGui {
             //rotate with player
             var drawLoc = playerLocation.Subtract(ObjectLocation).Rotate2D(playerHeading).Scale(scale).Add(origin);
             
-            g.AddCircleFilled(drawLoc.ToVector2(), 4, Color, 16);
-            var textLoc = drawLoc.Subtract(new Vector3(0, 0, -4));
-            g.AddText(ImGui.GetFont(), 18, textLoc.ToVector2(), 0xFF000000, $"{Name}");
+            g.AddCircleFilled(drawLoc.ToVector2(), Radius, Color, 16);
+            
+            if (ImGui.IsMouseHoveringRect(new Vector2(drawLoc.X - Radius, drawLoc.Z - Radius), new Vector2(drawLoc.X + Radius, drawLoc.Z + Radius))) {
+                ImGui.SetTooltip($"[{Type}] {Name} 0x{Address.ToInt64():X8}");
+            }
+
+            var textLoc = drawLoc.Subtract(new Vector3(0, 0, -(Radius + 1)));
+            g.AddText(ImGui.GetFont(), 14, textLoc.ToVector2(), 0xFFFFFFFF, $"{Name}");
         }
     }
 }
