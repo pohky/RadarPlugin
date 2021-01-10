@@ -13,6 +13,11 @@ namespace RadarPlugin {
         public static float Rad2Deg(this float radians) {
             return radians * Rad2DegVal;
         }
+
+        public static float NormalizeRadian(this float radian) {
+            if (radian < 0f) return (float)(-(float)(-radian % 6.2831853071795862) + 6.2831853071795862);
+            return (float)(radian % 6.2831853071795862);
+        }
     }
 
     public static class Vector3Ex {

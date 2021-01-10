@@ -12,7 +12,7 @@ namespace RadarPlugin.GameObjects {
 
         public GameObjectType Type => (GameObjectType)Core.Memory.Read<byte>(Pointer + Offsets.Object.Type);
         public Vector3 Location => Core.Memory.Read<Vector3>(Pointer + Offsets.Object.Location);
-        public float Heading => Core.Memory.Read<float>(Pointer + Offsets.Object.Heading);
+        public float Heading => Core.Memory.Read<float>(Pointer + Offsets.Object.Heading).NormalizeRadian();
 
         public virtual uint NpcId => Core.Memory.Read<uint>(Pointer + Offsets.Object.NpcId);
 
