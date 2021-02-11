@@ -37,7 +37,7 @@ namespace RadarPlugin.PluginGui {
                     Color = 0xFFf54242;
                     break;
                 case GameObjectType.Pc:
-                    Name = "<censored>";
+                    //Name = "<censored>";
                     Color = 0xFF42f54b;
                     break;
                 default:
